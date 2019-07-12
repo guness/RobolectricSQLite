@@ -1,4 +1,7 @@
 apply plugin: 'java'
+apply plugin: 'com.github.dcendents.android-maven'
+
+group='com.github.guness'
 
 configurations {
     jni
@@ -17,7 +20,11 @@ task copyNatives(type: Copy) {
         }
     }
 
-    into project.file("$buildDir/resources/main")
+    into project.file("$buildDir/resources/main/libs")
+}
+
+artifacts {
+    archives jar
 }
 
 jar {
@@ -27,13 +34,13 @@ jar {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation 'com.almworks.sqlite4java:sqlite4java:1.0.392'
+    implementation 'com.almworks.sqlite4java:sqlite4java:' + almworks_version
     implementation 'com.google.guava:guava:28.0-android'
 
-    jni 'com.almworks.sqlite4java:libsqlite4java-osx:1.0.392'
-    jni 'com.almworks.sqlite4java:libsqlite4java-linux-amd64:1.0.392'
-    jni 'com.almworks.sqlite4java:libsqlite4java-linux-i386:1.0.392'
-    jni 'com.almworks.sqlite4java:sqlite4java-win32-x64:1.0.392'
-    jni 'com.almworks.sqlite4java:sqlite4java-win32-x86:1.0.392'
+    jni 'com.almworks.sqlite4java:libsqlite4java-osx:' + almworks_version
+    jni 'com.almworks.sqlite4java:libsqlite4java-linux-amd64:' + almworks_version
+    jni 'com.almworks.sqlite4java:libsqlite4java-linux-i386:' + almworks_version
+    jni 'com.almworks.sqlite4java:sqlite4java-win32-x64:' + almworks_version
+    jni 'com.almworks.sqlite4java:sqlite4java-win32-x86:' + almworks_version
 }
 

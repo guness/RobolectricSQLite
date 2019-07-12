@@ -13,6 +13,11 @@
             <set />
           </value>
         </entry>
+        <entry key="$PROJECT_DIR$/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
         <entry key="$PROJECT_DIR$/library/build.gradle">
           <value>
             <set />
@@ -44,6 +49,16 @@
           </value>
         </entry>
         <entry key="$PROJECT_DIR$/../medici/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../medici/medici/app/build.gradle">
+          <value>
+            <set />
+          </value>
+        </entry>
+        <entry key="$PROJECT_DIR$/../medici/medici/app/src/test/java/tools/UnitTest.kt">
           <value>
             <set />
           </value>

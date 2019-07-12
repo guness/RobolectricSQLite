@@ -1,6 +1,10 @@
 package com.guness.robolectric.sqlite.binaries;
 
 public class SQLiteBinaries {
+
+    private static final String ALMWORKS_VERSION = "1.0.392";
+    private static final String SQLITE4JAVA = "sqlite4java";
+
     public enum OS {
         WINDOWS, LINUX, MAC
     }
@@ -11,20 +15,20 @@ public class SQLiteBinaries {
 
     public static String getLibraryName(OS os, ARCH arch) {
         if (os == OS.MAC) {
-            return "libsqlite4java-osx.dylib";
+            return "lib" + SQLITE4JAVA + "-osx-" + ALMWORKS_VERSION + ".dylib";
         } else if (arch == ARCH.x86) {
             switch (os) {
                 case LINUX:
-                    return "libsqlite4java-linux-i386.so";
+                    return "lib" + SQLITE4JAVA + "-linux-i386-" + ALMWORKS_VERSION + ".so";
                 case WINDOWS:
-                    return "sqlite4java-win32-x86.dll";
+                    return SQLITE4JAVA + "-win32-x86-" + ALMWORKS_VERSION + ".dll";
             }
         } else {
             switch (os) {
                 case LINUX:
-                    return "libsqlite4java-linux-amd64.so";
+                    return "lib" + SQLITE4JAVA + "-linux-amd64-" + ALMWORKS_VERSION + ".so";
                 case WINDOWS:
-                    return "sqlite4java-win32-x64.dll";
+                    return SQLITE4JAVA + "-win32-x64-" + ALMWORKS_VERSION + ".dll";
             }
         }
         throw new UnsupportedOperationException("This OS + Arch combination is not supported");

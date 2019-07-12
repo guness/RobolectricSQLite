@@ -6,6 +6,7 @@ import com.google.common.annotations.VisibleForTesting;
 import com.google.common.io.ByteSource;
 import com.google.common.io.Files;
 import com.google.common.io.Resources;
+import com.guness.robolectric.sqlite.binaries.SQLiteBinaries;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -20,7 +21,6 @@ import java.util.logging.Logger;
 public class SQLiteLibraryLoader {
     private static SQLiteLibraryLoader instance;
     private static final String SQLITE4JAVA = "sqlite4java";
-    private static final String OS_WIN = "windows", OS_LINUX = "linux", OS_MAC = "mac";
 
     private final LibraryNameMapper libraryNameMapper;
     private boolean loaded;
@@ -60,11 +60,11 @@ public class SQLiteLibraryLoader {
     }
 
     public String getLibClasspathResourceName() {
-        return getNativesResourcesPathPart() + "/" + getNativesResourcesFilePart();
+        return SQLiteBinaries.getLibraryName(getOS(), getArchitecture());
     }
 
     private ByteSource getLibraryByteSource() {
-        return Resources.asByteSource(Resources.getResource(getLibClasspathResourceName()));
+        return Resources.asByteSource(Resources.getResource("libs/" + getLibClasspathResourceName()));
     }
 
     private void logWithTime(final String message, final long startTime) {
@@ -85,6 +85,7 @@ public class SQLiteLibraryLoader {
         Logger.getLogger("com.almworks.sqlite4java").setLevel(Level.WARNING);
 
         SQLite.setLibraryPath(libPath.getAbsolutePath());
+
         try {
             log("SQLite version: library " + SQLite.getLibraryVersion() + " / core " + SQLite.getSQLiteVersion());
         } catch (SQLiteException e) {
@@ -97,33 +98,25 @@ public class SQLiteLibraryLoader {
         return libraryNameMapper.mapLibraryName(SQLITE4JAVA);
     }
 
-    private String getNativesResourcesPathPart() {
-        return getOsPrefix() + "-" + getArchitectureSuffix();
-    }
-
-    private String getNativesResourcesFilePart() {
-        return getLibName().replace(".dylib", ".jnilib");
-    }
-
-    private String getOsPrefix() {
+    private SQLiteBinaries.OS getOS() {
         String name = System.getProperty("os.name").toLowerCase(Locale.US);
         if (name.contains("win")) {
-            return OS_WIN;
+            return SQLiteBinaries.OS.WINDOWS;
         } else if (name.contains("linux")) {
-            return OS_LINUX;
+            return SQLiteBinaries.OS.LINUX;
         } else if (name.contains("mac")) {
-            return OS_MAC;
+            return SQLiteBinaries.OS.MAC;
         } else {
             throw new UnsupportedOperationException("Architecture '" + name + "' is not supported by SQLite library");
         }
     }
 
-    private String getArchitectureSuffix() {
+    private SQLiteBinaries.ARCH getArchitecture() {
         String arch = System.getProperty("os.arch").toLowerCase(Locale.US).replaceAll("\\W", "");
         if ("i386".equals(arch) || "x86".equals(arch)) {
-            return "x86";
+            return SQLiteBinaries.ARCH.x86;
         } else {
-            return "x86_64";
+            return SQLiteBinaries.ARCH.x64;
         }
     }
 
